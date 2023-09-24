@@ -13,18 +13,27 @@ RUN install_packages \
     hplip \
     hplip-data \
     libcups2-dev \
-    build-essential 
+    build-essential \
+    sane-utils \
+    libsane \
+    sane-airscan \
+    libsane-dev libjpeg-dev libpng-dev \
+    libavahi-client-dev libusb-1.*-dev cmake
 
 # Add support for Samsung printers via Splix
 WORKDIR /usr/src/app
 
 RUN git clone https://gitlab.com/ScumCoder/splix.git
+RUN git clone https://github.com/SimulPiscator/AirSane.git && mkdir AirSane-build
 
 WORKDIR /usr/src/app/splix/splix
 
 RUN sudo make DISABLE_JBIG=1 && \
     sudo make install && \
     cp ./ppd/m2020.ppd /usr/share/ppd/custom
+
+WORKDIR /usr/src/app/AirSane-build
+RUN cmake ../AirSane && make && sudo make install
 
 WORKDIR /
 

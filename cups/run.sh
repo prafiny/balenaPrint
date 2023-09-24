@@ -12,6 +12,8 @@ echo "Starting CUPS"
 lpinfo -m
 cupsd -f &
 
+echo "Starting AirSane"
+airsaned &
 
 echo "Configuring HP Printers"
 if [[ -n "$HP_IP_PRINTERS" ]]; then
